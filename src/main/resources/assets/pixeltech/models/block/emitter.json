@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "pixeltech:block/emitter_top",
+    "bottom": "pixeltech:block/emitter_bottom",
+    "side": "pixeltech:block/emitter_side"
+  }
+}
