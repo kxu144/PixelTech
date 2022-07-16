@@ -1,11 +1,7 @@
-package com.mrmakui.pixeltech.tileentity;
+package com.kxu144.pixeltech.tileentity;
 
-import com.mrmakui.pixeltech.block.ModBlocks;
-import com.pixelmonmod.pixelmon.api.registries.PixelmonItems;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

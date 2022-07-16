@@ -1,8 +1,8 @@
-package com.mrmakui.pixeltech.block;
+package com.kxu144.pixeltech.block;
 
-import com.mrmakui.pixeltech.container.EmitterContainer;
-import com.mrmakui.pixeltech.tileentity.EmitterTile;
-import com.mrmakui.pixeltech.tileentity.ModTileEntities;
+import com.kxu144.pixeltech.container.EmitterContainer;
+import com.kxu144.pixeltech.tileentity.EmitterTile;
+import com.kxu144.pixeltech.tileentity.ModTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +21,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 

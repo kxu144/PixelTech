@@ -1,7 +1,7 @@
-package com.mrmakui.pixeltech.tileentity;
+package com.kxu144.pixeltech.tileentity;
 
-import com.mrmakui.pixeltech.PixelTech;
-import com.mrmakui.pixeltech.block.ModBlocks;
+import com.kxu144.pixeltech.PixelTech;
+import com.kxu144.pixeltech.block.ModBlocks;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;

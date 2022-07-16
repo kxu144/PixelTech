@@ -1,7 +1,7 @@
-package com.mrmakui.pixeltech.block;
+package com.kxu144.pixeltech.block;
 
-import com.mrmakui.pixeltech.PixelTech;
-import com.mrmakui.pixeltech.item.ModItems;
+import com.kxu144.pixeltech.PixelTech;
+import com.kxu144.pixeltech.item.ModItems;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

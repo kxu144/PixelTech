@@ -1,6 +1,6 @@
-package com.mrmakui.pixeltech.container;
+package com.kxu144.pixeltech.container;
 
-import com.mrmakui.pixeltech.block.ModBlocks;
+import com.kxu144.pixeltech.block.ModBlocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

@@ -1,10 +1,10 @@
-package com.mrmakui.pixeltech;
+package com.kxu144.pixeltech;
 
-import com.mrmakui.pixeltech.block.ModBlocks;
-import com.mrmakui.pixeltech.container.ModContainers;
-import com.mrmakui.pixeltech.item.ModItems;
-import com.mrmakui.pixeltech.screen.EmitterScreen;
-import com.mrmakui.pixeltech.tileentity.ModTileEntities;
+import com.kxu144.pixeltech.block.ModBlocks;
+import com.kxu144.pixeltech.container.ModContainers;
+import com.kxu144.pixeltech.item.ModItems;
+import com.kxu144.pixeltech.screen.EmitterScreen;
+import com.kxu144.pixeltech.tileentity.ModTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.ScreenManager;

@@ -1,7 +1,6 @@
-package com.mrmakui.pixeltech.container;
+package com.kxu144.pixeltech.container;
 
-import com.mrmakui.pixeltech.PixelTech;
-import info.pixelmon.repack.yaml.snakeyaml.emitter.Emitter;
+import com.kxu144.pixeltech.PixelTech;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

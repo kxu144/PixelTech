@@ -1,6 +1,6 @@
-package com.mrmakui.pixeltech.item;
+package com.kxu144.pixeltech.item;
 
-import com.mrmakui.pixeltech.PixelTech;
+import com.kxu144.pixeltech.PixelTech;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

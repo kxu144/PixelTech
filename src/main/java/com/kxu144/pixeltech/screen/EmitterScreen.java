@@ -1,9 +1,9 @@
-package com.mrmakui.pixeltech.screen;
+package com.kxu144.pixeltech.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mrmakui.pixeltech.PixelTech;
-import com.mrmakui.pixeltech.container.EmitterContainer;
+import com.kxu144.pixeltech.PixelTech;
+import com.kxu144.pixeltech.container.EmitterContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
