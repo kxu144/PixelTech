@@ -27,11 +27,11 @@ public class EmitterContainer extends Container {
         this.tileEntity = world.getBlockEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
-        layoutPlayerInventorySlots(32, 118);
+        layoutPlayerInventorySlots(8, 62);
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 105, 86));
+                addSlot(new SlotItemHandler(h, 0, 80, 29));
             });
         }
     }

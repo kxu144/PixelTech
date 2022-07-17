@@ -1,29 +1,6 @@
 {
   "variants": {
-    "facing=down": {
-      "x": 180,
-      "model": "pixeltech:block/emitter"
-    },
-    "facing=east": {
-      "x": 90,
-      "y": 90,
-      "model": "pixeltech:block/emitter"
-    },
-    "facing=north": {
-      "x": 90,
-      "model": "pixeltech:block/emitter"
-    },
-    "facing=south": {
-      "x": 90,
-      "y": 180,
-      "model": "pixeltech:block/emitter"
-    },
-    "facing=up": {
-      "model": "pixeltech:block/emitter"
-    },
-    "facing=west": {
-      "x": 90,
-      "y": 270,
+    "": {
       "model": "pixeltech:block/emitter"
     }
   }

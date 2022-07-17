@@ -28,33 +28,10 @@ import javax.annotation.Nullable;
 
 public class EmitterBlock extends Block {
 
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
-
     // TODO: fix texture rendering properly (maybe just go top on all sides)
     // TODO: actual lure functionality
     public EmitterBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP));
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation direction) {
-        return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
     }
 
     @Override
