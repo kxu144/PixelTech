@@ -17,6 +17,7 @@ public class EmitterScreen extends ContainerScreen<EmitterContainer> {
 
     public EmitterScreen(EmitterContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
+        this.inventoryLabelY = -1000;
     }
 
     @Override
@@ -24,6 +25,7 @@ public class EmitterScreen extends ContainerScreen<EmitterContainer> {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
+        //this.inventory.getDisplayName().getVisualOrderText();
     }
 
     @Override

@@ -28,8 +28,6 @@ import javax.annotation.Nullable;
 
 public class EmitterBlock extends Block {
 
-    // TODO: fix texture rendering properly (maybe just go top on all sides)
-    // TODO: actual lure functionality
     public EmitterBlock(Properties properties) {
         super(properties);
     }
