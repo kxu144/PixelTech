@@ -52,7 +52,7 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public int spawnTick = 40;
+    public int spawnTick = 200;
     public int spawnRadius = 8;
     public int maxSpawns = 5;
     public int levelMin = 1;
@@ -150,9 +150,12 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
 
     @Override
     public void tick() {
+        //System.out.println(this.tick);
+        ItemStack itemStack = this.itemHandler.getStackInSlot(0);
         if (!this.level.isClientSide) {
             this.doSpawning(false);
-        } else if (!this.itemHandler.getStackInSlot(0).isEmpty() && this.tick < 20) {
+            this.updateStuff(itemStack);
+        } else if (!itemStack.isEmpty() && this.tick < 20) {
             this.doEffects();
         }
     }
@@ -164,6 +167,7 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
                 this.doFailedEffects();
                 return;
             }
+            //System.out.println("Found pokemon: " + p.toString());
             boolean checkLegend = !this.spawnLegend && p.isLegendary();
             boolean checkMythic = !this.spawnMythic && p.isMythical();
             boolean checkUltra = !this.spawnUltra && p.isUltraBeast();
@@ -173,6 +177,7 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
             }
 
             this.spawnPixelmon(p);
+            //System.out.println("Spawned " + p.toString());
             this.resetSpawnTick();
             if (override) {
                 return;
@@ -182,8 +187,6 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
         if (this.tick == -1) {
             this.resetSpawnTick();
         }
-
-        --this.tick;
     }
 
     private void doEffects() {
@@ -219,11 +222,34 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
 
     private Pokemon selectPokemonForSpawn() {
         ItemStack itemStack = this.itemHandler.getStackInSlot(0);
-        if (itemStack.isEmpty() || !(itemStack.getItem() instanceof LureItem)) {
+        if (!isValidItem()) {
+            //System.out.println("Not valid item");
             return null;
         }
         Optional<Species> optional = PixelmonSpecies.getRandomFromType(((LureItem) itemStack.getItem()).type.type);
         return optional.map(PokemonFactory::create).orElse(null);
+    }
+
+    private boolean isValidItem() {
+        ItemStack itemStack = this.itemHandler.getStackInSlot(0);
+        if (itemStack.isEmpty() || !(itemStack.getItem() instanceof LureItem)) {
+            return false;
+        }
+        return true;
+    }
+
+    private void updateStuff(ItemStack itemStack) {
+        if (!isValidItem()) {
+            return;
+        }
+        --this.tick;
+        if (this.tick % 10 == 0) {
+            itemStack.setDamageValue(itemStack.getDamageValue() + 1);
+        }
+        if (itemStack.getDamageValue() >= itemStack.getMaxDamage()) {
+            itemStack.shrink(1);
+            resetSpawnTick();
+        }
     }
 
     private void spawnPixelmon(Pokemon p) {
@@ -325,6 +351,7 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
 
     private void resetSpawnTick() {
         this.tick = (int)((double)this.spawnTick * (1.0D + (this.level.random.nextDouble() - 0.5D) * 0.2D));
+        //System.out.println("Tick reset to " + this.tick);
     }
 
     private int getTopSolidBlock(int x, int y, int z) {
