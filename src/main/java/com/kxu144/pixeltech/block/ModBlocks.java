@@ -20,8 +20,8 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, PixelTech.MOD_ID);
 
-    public static final RegistryObject<Block> SPAWNER = registerBlock("spawner", () -> new Block(AbstractBlock.Properties.of(Material.STONE).strength(5.0F).sound(SoundType.METAL)));
     public static final RegistryObject<Block> EMITTER = registerBlock("emitter", () -> new EmitterBlock(AbstractBlock.Properties.of(Material.STONE).strength(5.0F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> CAPTURER = registerBlock("capturer", () -> new CapturerBlock(AbstractBlock.Properties.of(Material.STONE).strength(5.0F).sound(SoundType.METAL)));
 
     public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> obj = BLOCKS.register(name, block);

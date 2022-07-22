@@ -14,6 +14,7 @@ public class ModTileEntities {
             DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, PixelTech.MOD_ID);
 
     public static RegistryObject<TileEntityType<EmitterTile>> EMITTER_TILE = TILE_ENTITIES.register("emitter_tile", () -> TileEntityType.Builder.of(EmitterTile::new, ModBlocks.EMITTER.get()).build(null));
+    public static RegistryObject<TileEntityType<CapturerTile>> CAPTURER_TILE = TILE_ENTITIES.register("capturer_tile", () -> TileEntityType.Builder.of(CapturerTile::new, ModBlocks.CAPTURER.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         TILE_ENTITIES.register(eventBus);
