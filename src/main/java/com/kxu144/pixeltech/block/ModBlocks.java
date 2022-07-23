@@ -22,6 +22,7 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> EMITTER = registerBlock("emitter", () -> new EmitterBlock(AbstractBlock.Properties.of(Material.STONE).strength(5.0F).sound(SoundType.METAL)));
     public static final RegistryObject<Block> CAPTURER = registerBlock("capturer", () -> new CapturerBlock(AbstractBlock.Properties.of(Material.STONE).strength(5.0F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> POKEPIPE = registerBlock("pokepipe", () -> new PokePipeBlock(AbstractBlock.Properties.of(Material.GLASS).strength(3.0F).sound(SoundType.GLASS)));
 
     public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> obj = BLOCKS.register(name, block);

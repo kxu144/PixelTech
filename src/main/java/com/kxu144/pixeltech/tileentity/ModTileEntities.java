@@ -15,6 +15,8 @@ public class ModTileEntities {
 
     public static RegistryObject<TileEntityType<EmitterTile>> EMITTER_TILE = TILE_ENTITIES.register("emitter_tile", () -> TileEntityType.Builder.of(EmitterTile::new, ModBlocks.EMITTER.get()).build(null));
     public static RegistryObject<TileEntityType<CapturerTile>> CAPTURER_TILE = TILE_ENTITIES.register("capturer_tile", () -> TileEntityType.Builder.of(CapturerTile::new, ModBlocks.CAPTURER.get()).build(null));
+    public static RegistryObject<TileEntityType<PokePipeTile>> POKEPIPE_TILE = TILE_ENTITIES.register("pokepipe_tile", () -> TileEntityType.Builder.of(PokePipeTile::new, ModBlocks.POKEPIPE.get()).build(null));
+
 
     public static void register(IEventBus eventBus) {
         TILE_ENTITIES.register(eventBus);

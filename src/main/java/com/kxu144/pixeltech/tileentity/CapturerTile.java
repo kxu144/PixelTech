@@ -100,10 +100,7 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity {
             if (this.tick <= 0 && this.capturedPokemon.size() < this.maxSize) {
                 PixelmonEntity entity = findTarget();
                 if (entity != null) {
-                    System.out.println("Disposed of " + entity.getPokemonName());
-                    for (PixelmonEntity pe : capturedPokemon) {
-                        System.out.println(pe.getPokemonName());
-                    }
+                    //System.out.println("Disposed of " + entity.getPokemonName());
                     this.capturedPokemon.add(entity);
                     entity.remove();
 
@@ -127,9 +124,9 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity {
         List<PixelmonEntity> entities = level.getEntitiesOfClass(PixelmonEntity.class, this.aoe);
         while (!entities.isEmpty()) {
             PixelmonEntity entity = entities.remove(level.random.nextInt(entities.size()));
-            System.out.println("Found " + entity.getPokemonName());
+            //System.out.println("Found " + entity.getPokemonName());
             if (isValidPixelmon(entity)) {
-                System.out.println(entity.getPokemonName() + " is valid!");
+                //System.out.println(entity.getPokemonName() + " is valid!");
                 return entity;
             }
         }
@@ -139,4 +136,6 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity {
     private boolean isValidPixelmon(PixelmonEntity entity) {
         return !entity.hasOwner();
     }
+
+
 }

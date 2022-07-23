@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class CapturerBlock extends Block {
+public class CapturerBlock extends Block implements PokeConnectable {
 
     public CapturerBlock(AbstractBlock.Properties properties) {
         super(properties);

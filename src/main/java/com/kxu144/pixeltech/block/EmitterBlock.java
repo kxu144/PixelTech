@@ -24,7 +24,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
-public class EmitterBlock extends Block {
+public class EmitterBlock extends Block implements PokeConnectable {
 
     public EmitterBlock(Properties properties) {
         super(properties);
