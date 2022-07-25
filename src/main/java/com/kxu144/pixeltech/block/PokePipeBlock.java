@@ -20,9 +20,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public class PokePipeBlock extends Block implements PokeConnectable {
     public static final BooleanProperty EAST = BooleanProperty.create("east");
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
+    public static final BooleanProperty POKE = BooleanProperty.create("poke");
     public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.<Direction, BooleanProperty>builder()
             .put(Direction.NORTH, NORTH)
             .put(Direction.EAST, EAST)
@@ -45,6 +51,17 @@ public class PokePipeBlock extends Block implements PokeConnectable {
             .put(Direction.UP, UP)
             .put(Direction.DOWN, DOWN)
             .build();
+    private static final Map<Direction, VoxelShape> SHAPES_FLOOR = ImmutableMap.<Direction, VoxelShape>builder()
+            .put(Direction.NORTH, Block.box(2, 2, 0, 14, 14, 14))
+            .put(Direction.SOUTH, Block.box(2, 2, 2, 14, 14, 16))
+            .put(Direction.EAST, Block.box(2, 2, 2, 16, 14, 14))
+            .put(Direction.WEST, Block.box(0, 2, 2, 14, 14, 14))
+            .put(Direction.UP, Block.box(2, 2, 2, 14, 16, 14))
+            .put(Direction.DOWN, Block.box(2, 0, 2, 14, 14, 14))
+            .build();
+    private final Map<BlockState, VoxelShape> SHAPES_CACHE = Maps.newHashMap();
+
+
 
     public static final List<Class<?>> EXTRA_CONNECTED_BLOCKS = new ArrayList<Class<?>>() {
         {
@@ -61,7 +78,14 @@ public class PokePipeBlock extends Block implements PokeConnectable {
                 .setValue(SOUTH, false)
                 .setValue(WEST, false)
                 .setValue(UP, false)
-                .setValue(DOWN, false));
+                .setValue(DOWN, false)
+                .setValue(POKE, false));
+
+        for (BlockState state : this.getStateDefinition().getPossibleStates()) {
+            if (!state.getValue(POKE)) {
+                this.SHAPES_CACHE.put(state, this.calculateShape(state));
+            }
+        }
     }
 
     @Nullable
@@ -75,6 +99,26 @@ public class PokePipeBlock extends Block implements PokeConnectable {
         return true;
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        return this.SHAPES_CACHE.get(state.setValue(POKE, false));
+    }
+
+    private VoxelShape calculateShape(BlockState state) {
+        VoxelShape voxelShape = Block.box(2, 2, 2, 14, 14, 14);
+        for (Direction dir : PROPERTY_BY_DIRECTION.keySet()) {
+            if (state.getValue(PROPERTY_BY_DIRECTION.get(dir))) {
+                voxelShape = VoxelShapes.or(voxelShape, SHAPES_FLOOR.get(dir));
+            }
+        }
+        return voxelShape;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction dir, BlockState otherState, IWorld world, BlockPos pos, BlockPos otherPos) {
+        return getConnectionState((World) world, state, pos);
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
@@ -82,9 +126,11 @@ public class PokePipeBlock extends Block implements PokeConnectable {
     }
 
     private BlockState getConnectionState(World world, BlockState state, BlockPos pos) {
-        for (Direction dir : PROPERTY_BY_DIRECTION.keySet()) {
+        for (Direction dir : Direction.values()) {
             if (canConnectTo(world, pos.relative(dir))) {
                 state = state.setValue(PROPERTY_BY_DIRECTION.get(dir), true);
+            }  else {
+                state = state.setValue(PROPERTY_BY_DIRECTION.get(dir), false);
             }
         }
         return state;
@@ -105,16 +151,35 @@ public class PokePipeBlock extends Block implements PokeConnectable {
 
     @Override
     protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(NORTH).add(EAST).add(SOUTH).add(WEST).add(UP).add(DOWN));
+        super.createBlockStateDefinition(builder.add(NORTH).add(EAST).add(SOUTH).add(WEST).add(UP).add(DOWN).add(POKE));
     }
 
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         if (!world.isClientSide()) {
-            for (Direction dir : PROPERTY_BY_DIRECTION.keySet()) {
+            for (Direction dir : Direction.values()) {
                 System.out.println(dir.toString() + state.getValue(PROPERTY_BY_DIRECTION.get(dir)));
             }
         }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!isMoving && !state.is(newState.getBlock())) {
+            super.onRemove(state, world, pos, newState, false);
+            if (!world.isClientSide) {
+                for (Direction dir : Direction.values()) {
+                    world.updateNeighborsAt(pos.relative(dir), this);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos neighbor, boolean isMoving) {
+        if (!world.isClientSide) {
+            world.setBlock(pos, getConnectionState(world, state, pos), Constants.BlockFlags.DEFAULT);
+        }
     }
 }
