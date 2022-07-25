@@ -53,7 +53,6 @@ public class PokePipeBlock extends Block implements PokeConnectable {
     };
 
 
-
     public PokePipeBlock(AbstractBlock.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()

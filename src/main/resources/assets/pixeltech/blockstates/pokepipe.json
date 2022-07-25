@@ -2,10 +2,42 @@
   "multipart": [
     {
       "when": {
+        "up": "false",
+        "down": "false",
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "pixeltech:block/pokepipe_dot"
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "pixeltech:block/pokepipe_connection",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "pixeltech:block/pokepipe_connection",
+        "x": 270
+      }
+    },
+    {
+      "when": {
         "north": "true"
       },
       "apply": {
-        "model": "minecraft:block/redstone_dust_side0"
+        "model": "pixeltech:block/pokepipe_connection",
+        "y": 180
       }
     },
     {
@@ -13,7 +45,7 @@
         "south": "true"
       },
       "apply": {
-        "model": "pixeltech:block/emitter"
+        "model": "pixeltech:block/pokepipe_connection"
       }
     },
     {
@@ -21,7 +53,7 @@
         "east": "true"
       },
       "apply": {
-        "model": "minecraft:block/redstone_dust_side_alt1",
+        "model": "pixeltech:block/pokepipe_connection",
         "y": 270
       }
     },
@@ -30,8 +62,8 @@
         "west": "true"
       },
       "apply": {
-        "model": "minecraft:block/redstone_dust_side1",
-        "y": 270
+        "model": "pixeltech:block/pokepipe_connection",
+        "y": 90
       }
     }
   ]
