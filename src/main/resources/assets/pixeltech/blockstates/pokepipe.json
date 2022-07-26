@@ -2,6 +2,14 @@
   "multipart": [
     {
       "when": {
+        "poke": "true"
+      },
+      "apply": {
+        "model": "pixeltech:block/pokepipe_poke"
+      }
+    },
+    {
+      "when": {
         "up": "false",
         "down": "false",
         "north": "false",

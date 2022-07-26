@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "poke": "pixeltech:block/pokeball"
+  },
+  "elements": [
+    {
+      "from": [3, 3, 3],
+      "to": [13, 13, 13],
+      "shade": false,
+      "faces": {
+        "up": {"uv": [0, 0, 16, 16], "texture": "#poke"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#poke"},
+        "north": {"uv": [0, 0, 16, 16], "texture": "#poke"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#poke"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#poke"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#poke"}
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 {
   "block.pixeltech.emitter": "Emitter",
   "screen.pixeltech.emitter": "Emitter",
-  "block.pixeltech.capturer": "Capturer"
+  "block.pixeltech.capturer": "Capturer",
+  "block.pixeltech.pokepipe": "PokePipe"
 }

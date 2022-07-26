@@ -2,6 +2,7 @@ package com.kxu144.pixeltech.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.kxu144.pixeltech.block.PokeConnectable;
 import com.pixelmonmod.api.pokemon.PokemonSpecification;
 import com.pixelmonmod.pixelmon.api.config.PixelmonConfigProxy;
 import com.pixelmonmod.pixelmon.api.events.spawning.PixelmonSpawnerEvent;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class EmitterTile extends TileEntity implements ITickableTileEntity {
+public class EmitterTile extends TileEntity implements ITickableTileEntity, PokeConnectable {
 
     public static final Set<Material> VALID_LAND_FLOOR_MATERIALS;
     public static final Set<Material> VALID_LAND_AIR_MATERIALS;
@@ -423,6 +424,26 @@ public class EmitterTile extends TileEntity implements ITickableTileEntity {
         VALID_LAND_AIR_MATERIALS = Sets.newHashSet(new Material[]{Material.AIR, Material.TOP_SNOW, Material.PLANT, Material.REPLACEABLE_PLANT});
         VALID_WATER_FLOOR_MATERIALS = Sets.newHashSet(new Material[]{Material.WATER});
         VALID_WATER_AIR_MATERIALS = Sets.newHashSet(new Material[]{Material.AIR, Material.WATER});
+    }
+
+    @Override
+    public boolean isFull() {
+        return true;
+    }
+
+    @Override
+    public void pushPoke() {
+
+    }
+
+    @Override
+    public boolean canPull() {
+        return false;
+    }
+
+    @Override
+    public void pullPoke(CompoundNBT nbt, Direction dir) {
+        throw new IllegalStateException("Cannot pull into Emitter.");
     }
 
     public static enum AreaType {

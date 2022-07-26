@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 public class PixelTech
 {
     public static final String MOD_ID = "pixeltech";
+    public static final int FLY_HEIGHt = 50;
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();

@@ -3,7 +3,10 @@ package com.kxu144.pixeltech.block;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.kxu144.pixeltech.tileentity.ModTileEntities;
+import com.kxu144.pixeltech.tileentity.PokePipeTile;
 import com.pixelmonmod.pixelmon.blocks.machines.PCBlock;
+import com.pixelmonmod.pixelmon.blocks.tileentity.PCTileEntity;
+import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PokePipeBlock extends Block implements PokeConnectable {
+public class PokePipeBlock extends Block {
 
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -65,7 +68,7 @@ public class PokePipeBlock extends Block implements PokeConnectable {
 
     public static final List<Class<?>> EXTRA_CONNECTED_BLOCKS = new ArrayList<Class<?>>() {
         {
-            add(PCBlock.class);
+            add(PCTileEntity.class);
         }
     };
 
@@ -137,12 +140,12 @@ public class PokePipeBlock extends Block implements PokeConnectable {
     }
 
     protected boolean canConnectTo(World world, BlockPos pos) {
-        Block block = world.getBlockState(pos).getBlock();
-        if (block instanceof PokeConnectable) {
+        TileEntity entity = world.getBlockEntity(pos);
+        if (entity instanceof PokeConnectable) {
             return true;
         }
         for (Class<?> c : EXTRA_CONNECTED_BLOCKS) {
-            if (c.isInstance(block)) {
+            if (c.isInstance(entity)) {
                 return true;
             }
         }
@@ -159,6 +162,13 @@ public class PokePipeBlock extends Block implements PokeConnectable {
         if (!world.isClientSide()) {
             for (Direction dir : Direction.values()) {
                 System.out.println(dir.toString() + state.getValue(PROPERTY_BY_DIRECTION.get(dir)));
+            }
+            System.out.println("POKE:" + state.getValue(POKE));
+            try {
+                System.out.println(((PokePipeTile) world.getBlockEntity(pos)).poke != null);
+                System.out.println("contains " + new PixelmonEntity(world, ((PokePipeTile) world.getBlockEntity(pos)).poke).getPokemonName());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return ActionResultType.SUCCESS;
