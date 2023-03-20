@@ -39,8 +39,18 @@ public class PokePipeTile extends TileEntity implements ITickableTileEntity, Pok
 
     private void loadPokemon(CompoundNBT nbt) {
         if (nbt.size() > 0) {
-            this.prevDir = Direction.byName(nbt.getString("dir"));
-            this.poke = nbt.getCompound("poke");
+            String dir = nbt.getString("dir");
+            if (!dir.equals("")) {
+                this.prevDir = Direction.byName(dir);
+            } else {
+                this.prevDir = null;
+            }
+            CompoundNBT poke = nbt.getCompound("poke");
+            if (!poke.isEmpty()) {
+                this.poke = poke;
+            } else {
+                this.poke = null;
+            }
         }
     }
 
