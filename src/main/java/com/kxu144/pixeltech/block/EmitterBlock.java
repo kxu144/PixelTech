@@ -52,7 +52,9 @@ public class EmitterBlock extends Block {
 
     @Override
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+        if (world.isClientSide()) {
+
+        } else if (!isMoving && state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
             TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof EmitterTile) {
                 world.getBlockEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> { popResource(world, pos, h.getStackInSlot(0)); });

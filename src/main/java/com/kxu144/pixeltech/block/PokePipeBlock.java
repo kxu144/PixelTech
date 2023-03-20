@@ -2,10 +2,13 @@ package com.kxu144.pixeltech.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.kxu144.pixeltech.entity.PokePipePixelmonEntity;
 import com.kxu144.pixeltech.tileentity.ModTileEntities;
 import com.kxu144.pixeltech.tileentity.PokePipeTile;
+import com.pixelmonmod.pixelmon.api.pokemon.species.aggression.Aggression;
 import com.pixelmonmod.pixelmon.blocks.machines.PCBlock;
 import com.pixelmonmod.pixelmon.blocks.tileentity.PCTileEntity;
+import com.pixelmonmod.pixelmon.entities.SpawnLocationType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -160,9 +163,6 @@ public class PokePipeBlock extends Block {
     @Override
     public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         if (!world.isClientSide()) {
-            for (Direction dir : Direction.values()) {
-                System.out.println(dir.toString() + state.getValue(PROPERTY_BY_DIRECTION.get(dir)));
-            }
             System.out.println("POKE:" + state.getValue(POKE));
             try {
                 System.out.println(((PokePipeTile) world.getBlockEntity(pos)).poke != null);
@@ -176,11 +176,22 @@ public class PokePipeBlock extends Block {
 
     @Override
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!isMoving && !state.is(newState.getBlock())) {
-            super.onRemove(state, world, pos, newState, false);
-            if (!world.isClientSide) {
-                for (Direction dir : Direction.values()) {
-                    world.updateNeighborsAt(pos.relative(dir), this);
+        if (world.isClientSide()) {
+
+        } else if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+            TileEntity tileEntity = world.getBlockEntity(pos);
+            if (tileEntity instanceof PokePipeTile) {
+                world.removeBlockEntity(pos);
+                world.updateNeighborsAt(pos, this);
+
+                // spawn pixelmon from broken pipe
+                PokePipeTile ppt = (PokePipeTile) tileEntity;
+                if (ppt.isFull()) {
+                    PixelmonEntity poke = new PokePipePixelmonEntity(world, ppt.poke);
+                    poke.setAggression(Aggression.AGGRESSIVE);
+                    poke.setSpawnLocation(SpawnLocationType.LAND);
+                    poke.moveTo(pos, 0, 0);
+                    world.addFreshEntity(poke);
                 }
             }
         }

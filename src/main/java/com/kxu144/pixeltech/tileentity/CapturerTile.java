@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.kxu144.pixeltech.PixelTech;
 import com.kxu144.pixeltech.block.PokeConnectable;
 import com.kxu144.pixeltech.block.PokePipeBlock;
+import com.kxu144.pixeltech.entity.PokePipePixelmonEntity;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.species.aggression.Aggression;
 import com.pixelmonmod.pixelmon.blocks.tileentity.PixelmonSpawnerTileEntity;
 import com.pixelmonmod.pixelmon.entities.pixelmon.AbstractBattleEntity;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
@@ -34,8 +37,11 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
     public int coolDown;
     public AxisAlignedBB aoe;
     public ListNBT capturedPokemon;
-
     public int tick;
+    public boolean canCaptureLegend = false;
+    public boolean canCaptureMythic = false;
+    public boolean canCaptureUltra = false;
+
 
     public CapturerTile(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
@@ -122,8 +128,18 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
         return null;
     }
 
-    private boolean isValidPixelmon(PixelmonEntity entity) {
-        return !entity.hasOwner();
+    public boolean isValidPixelmon(PixelmonEntity entity) {
+        if (entity.hasOwner()) {
+            return false;
+        }
+        Pokemon p = entity.getPokemon();
+        boolean checkLegend = !this.canCaptureLegend && p.isLegendary();
+        boolean checkMythic = !this.canCaptureMythic && p.isMythical();
+        boolean checkUltra = !this.canCaptureUltra && p.isUltraBeast();
+        if (checkLegend || checkMythic || checkUltra) {
+            return false;
+        }
+        return !(entity instanceof PokePipePixelmonEntity);
     }
 
     @Override
