@@ -5,12 +5,17 @@ import com.kxu144.pixeltech.PixelTech;
 import com.kxu144.pixeltech.block.PokeConnectable;
 import com.kxu144.pixeltech.block.PokePipeBlock;
 import com.kxu144.pixeltech.entity.PokePipePixelmonEntity;
+import com.pixelmonmod.pixelmon.api.events.CaptureEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.species.aggression.Aggression;
 import com.pixelmonmod.pixelmon.blocks.tileentity.PixelmonSpawnerTileEntity;
 import com.pixelmonmod.pixelmon.entities.pixelmon.AbstractBattleEntity;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
+import com.pixelmonmod.pixelmon.entities.pokeballs.PokeBallEntity;
+import com.pixelmonmod.pixelmon.items.LureItem;
+import com.pixelmonmod.pixelmon.items.PokeBallItem;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -19,11 +24,15 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 
@@ -31,6 +40,7 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
 
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(this::createHandler);
 
     public int radius;
     public int maxSize;
@@ -77,10 +87,47 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
 
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler();
+        return new ItemStackHandler(1) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return stack.getItem() instanceof PokeBallItem;
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return 64;
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                if (!isItemValid(slot, stack)) {
+                    return stack;
+                }
+
+                return super.insertItem(slot, stack, simulate);
+            }
+        };
     }
 
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (side == null) {
+                return handler.cast();
+            } else {
+                return inputHandler.cast();
+            }
+        }
 
+        return super.getCapability(cap);
+    }
 
     @Override
     public void tick() {
@@ -91,12 +138,12 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
             if (this.tick <= 0 && this.capturedPokemon.size() < this.maxSize) {
                 PixelmonEntity entity = findTarget();
                 if (entity != null) {
-                    //System.out.println("Disposed of " + entity.getPokemonName());
-                    entity.setFlyHeight(PixelTech.FLY_HEIGHt);
-                    this.capturedPokemon.add(entity.serializeNBT());
-                    entity.remove();
-
-                    this.tick = this.coolDown;
+                    ItemStack ball = this.itemHandler.getStackInSlot(0);
+                    if (!ball.isEmpty()) {
+                        ball.shrink(1);
+                        capturePokemon(entity);
+                        this.tick = this.coolDown;
+                    }
                 }
             }
             if (this.tick <= 5) {
@@ -106,6 +153,12 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
                 --this.tick;
             }
         }
+    }
+
+    private void capturePokemon(PixelmonEntity entity) {
+        entity.setFlyHeight(PixelTech.FLY_HEIGHt);
+        this.capturedPokemon.add(entity.serializeNBT());
+        entity.remove();
     }
 
     private void updateAOE() {

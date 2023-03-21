@@ -4,6 +4,7 @@ import com.kxu144.pixeltech.block.ModBlocks;
 import com.kxu144.pixeltech.container.ModContainers;
 import com.kxu144.pixeltech.item.ModItems;
 import com.kxu144.pixeltech.screen.EmitterScreen;
+import com.kxu144.pixeltech.screen.CapturerScreen;
 import com.kxu144.pixeltech.tileentity.ModTileEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -70,6 +71,8 @@ public class PixelTech
         event.enqueueWork(() -> {
             ScreenManager.register(ModContainers.EMITTER_CONTAINER.get(),
                     EmitterScreen::new);
+            ScreenManager.register(ModContainers.CAPTURER_CONTAINER.get(),
+                    CapturerScreen::new);
         });
     }
 

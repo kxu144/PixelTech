@@ -20,6 +20,11 @@ public class ModContainers {
         World world = inv.player.getCommandSenderWorld();
         return new EmitterContainer(windowId, world, pos, inv, inv.player);
     })));
+    public static final RegistryObject<ContainerType<CapturerContainer>> CAPTURER_CONTAINER = CONTAINERS.register("capturer_container", () -> IForgeContainerType.create(((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        World world = inv.player.getCommandSenderWorld();
+        return new CapturerContainer(windowId, world, pos, inv, inv.player);
+    })));
 
 
     public static void register(IEventBus eventBus) {
