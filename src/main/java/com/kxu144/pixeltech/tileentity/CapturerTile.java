@@ -1,18 +1,12 @@
 package com.kxu144.pixeltech.tileentity;
 
-import com.google.common.collect.Lists;
 import com.kxu144.pixeltech.PixelTech;
 import com.kxu144.pixeltech.block.PokeConnectable;
 import com.kxu144.pixeltech.block.PokePipeBlock;
-import com.kxu144.pixeltech.entity.PokePipePixelmonEntity;
-import com.pixelmonmod.pixelmon.api.events.CaptureEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.pokemon.species.aggression.Aggression;
-import com.pixelmonmod.pixelmon.blocks.tileentity.PixelmonSpawnerTileEntity;
-import com.pixelmonmod.pixelmon.entities.pixelmon.AbstractBattleEntity;
+import com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBallRegistry;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import com.pixelmonmod.pixelmon.entities.pokeballs.PokeBallEntity;
-import com.pixelmonmod.pixelmon.items.LureItem;
 import com.pixelmonmod.pixelmon.items.PokeBallItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -135,22 +129,23 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
             if (this.aoe == null) {
                 updateAOE();
             }
-            if (this.tick <= 0 && this.capturedPokemon.size() < this.maxSize) {
+            if (this.tick % this.coolDown == 0 && this.capturedPokemon.size() < this.maxSize) {
                 PixelmonEntity entity = findTarget();
                 if (entity != null) {
                     ItemStack ball = this.itemHandler.getStackInSlot(0);
                     if (!ball.isEmpty()) {
                         ball.shrink(1);
                         capturePokemon(entity);
-                        this.tick = this.coolDown;
                     }
                 }
             }
-            if (this.tick <= 5) {
+            if (this.tick % 5 == 0) {
                 pushPoke();
             }
             if (this.tick > 0) {
                 --this.tick;
+            } else {
+                this.tick = this.coolDown;
             }
         }
     }
@@ -159,6 +154,7 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
         entity.setFlyHeight(PixelTech.FLY_HEIGHt);
         this.capturedPokemon.add(entity.serializeNBT());
         entity.remove();
+        //new PokeBallEntity(PokeBallRegistry.);
     }
 
     private void updateAOE() {
@@ -192,7 +188,7 @@ public class CapturerTile extends TileEntity implements ITickableTileEntity, Pok
         if (checkLegend || checkMythic || checkUltra) {
             return false;
         }
-        return !(entity instanceof PokePipePixelmonEntity);
+        return true;
     }
 
     @Override

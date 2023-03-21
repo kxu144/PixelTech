@@ -2,24 +2,19 @@ package com.kxu144.pixeltech.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.kxu144.pixeltech.entity.PokePipePixelmonEntity;
 import com.kxu144.pixeltech.tileentity.ModTileEntities;
 import com.kxu144.pixeltech.tileentity.PokePipeTile;
 import com.pixelmonmod.pixelmon.api.pokemon.species.aggression.Aggression;
-import com.pixelmonmod.pixelmon.blocks.machines.PCBlock;
 import com.pixelmonmod.pixelmon.blocks.tileentity.PCTileEntity;
 import com.pixelmonmod.pixelmon.entities.SpawnLocationType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.RedstoneSide;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -29,7 +24,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -187,7 +181,7 @@ public class PokePipeBlock extends Block {
                 // spawn pixelmon from broken pipe
                 PokePipeTile ppt = (PokePipeTile) tileEntity;
                 if (ppt.isFull()) {
-                    PixelmonEntity poke = new PokePipePixelmonEntity(world, ppt.poke);
+                    PixelmonEntity poke = new PixelmonEntity(world, ppt.poke);
                     poke.setAggression(Aggression.AGGRESSIVE);
                     poke.setSpawnLocation(SpawnLocationType.LAND);
                     poke.moveTo(pos, 0, 0);
